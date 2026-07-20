@@ -180,9 +180,12 @@ test.describe("handling Products ", () => {
         await productsPage.productPriceLoc.allTextContents();
 
       console.log("products Prices are ", productPricesText);
+
       const originalProductsPrice = productPricesText.map((productPrice) => {
         return parseFloat(productPrice.replace("$", ""));
       });
+
+      console.log("original Products price", originalProductsPrice);
 
       // sort product in lohi or hilo
       await productsPage.productSortLoc.selectOption({
@@ -199,6 +202,8 @@ test.describe("handling Products ", () => {
           return parseFloat(actPrice.replace("$", ""));
         },
       );
+
+      console.log("actual products price", actualProductsSortPrice);
 
       // expected sorted products price
       let expectedProductsSortPrice;
