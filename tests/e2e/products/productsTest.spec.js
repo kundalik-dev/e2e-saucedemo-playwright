@@ -1,11 +1,22 @@
 import { test, expect } from "@playwright/test";
-import LoginPage from "../../../pom/pages/LoginPage";
-import ProductsPage from "../../../pom/pages/ProductsPage";
-import loginData from "../../../test-data/loginPage-data.json";
-import productsData from "../../../test-data/productsPage-data.json";
-import productsListData from "../../../test-data/productsList-data.json";
+// Pages Imports simplified
+// import LoginPage from "../../../pom/pages/LoginPage";
+// import ProductsPage from "../../../pom/pages/ProductsPage";
 
-const data = { ...loginData, ...productsData };
+// Data simplified imports
+// import productsListData from "../../../test-data/static/productsList-data.json";
+// import productsListData from "../../../test-data/static/productsList-data.json";
+// import productsListData from "../../../test-data/static/productsList-data.json";
+
+import { LoginPage, ProductsPage } from "../../../pom/pages/pages-export.js";
+
+import {
+  loginPageData,
+  productPageData,
+  productsListData,
+} from "../../../test-data/static/static-data";
+
+const data = { ...loginPageData, ...productPageData };
 
 /** @type {LoginPage} */
 let loginPage;
@@ -27,7 +38,7 @@ test.describe("handling Products ", () => {
     await loginPage.validLogin(data.username, data.password);
 
     // assert user is navigated to products page
-    await page.waitForURL(productsData.productsPageUrl);
+    await page.waitForURL(data.productsPageUrl);
 
     // assert applogo text presents
     await expect.soft(productsPage.appLogoLoc).toHaveText(data.appLogoText);
