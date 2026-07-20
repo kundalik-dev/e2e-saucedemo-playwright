@@ -1,34 +1,28 @@
 import { test, expect } from "@playwright/test";
 import LoginPage from "../pom/LoginPage";
+import ProductsPage from "../pom/ProductsPage";
+import data from "../test-data/loginPage-data.json";
 
-const appUrl = "https://qaplayground.com/bank/login";
 let loginPage;
-
-// valid login data
-const username = "standard_user";
-const password = "bank_sauce";
-const dashboardPageHeadingTxt = "Welcome back, Alex";
-
-// In-Valid login data
-const wrongUsername = "wrong_user";
-const wrongPassword = "wrong_password";
-const errorMsgText = "The username or password you entered is incorrect.";
+let productsPage;
 
 test.describe("login page", () => {
   test.beforeEach(async ({ page }) => {
     loginPage = new LoginPage(page);
-    await loginPage.launchUrl(appUrl);
+    productsPage = new ProductsPage(page);
+
+    await loginPage.launchUrl(data.appUrl);
   });
 
   test("should login wiht valid credentials", async () => {
-    await loginPage.validLogin(username, password);
-    await expect(loginPage.dashboardPageHeadingLoc).toHaveText(
-      dashboardPageHeadingTxt,
+    await loginPage.validLogin(data.username, data.password);
+    await expect(productsPage.pageHeadingTxtLoc).toHaveText(
+      data.productsPageHeading,
     );
   });
 
   test("should login wiht inValid credentials", async () => {
-    await loginPage.inValidLogin(wrongUsername, wrongPassword);
-    await expect(loginPage.errorMsgLoc).toHaveText(errorMsgText);
+    await loginPage.inValidLogin(data.invaliUsername, data.invalidPassword);
+    await expect(loginPage.errorMsgLoc).toHaveText(data.errorMsgText);
   });
 });

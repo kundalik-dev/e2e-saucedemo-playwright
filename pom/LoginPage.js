@@ -1,18 +1,19 @@
 class LoginPage {
   constructor(page) {
     this.page = page;
-    this.usernameLoc = page.getByRole("textbox", { name: "username" });
-    this.passwordLoc = page.getByRole("textbox", { name: "password" });
-    this.loginBtnLoc = page.getByRole("button", { name: "Sign In" });
-    this.dashboardPageHeadingLoc = page.getByText("Welcome back, Alex");
-    this.errorMsgLoc = page.getByText(
-      "The username or password you entered is incorrect.",
-      { exact: true },
-    );
+
+    // Login Form Inputs Locators
+    this.usernameLoc = page.getByRole("textbox", { name: "Username" });
+    this.passwordLoc = page.getByRole("textbox", { name: "Password" });
+    this.loginBtnLoc = page.getByRole("button", { name: "Login" });
+
+    // Login Form Message Locators
+
+    this.errorMsgLoc = page.getByRole("heading", { level: 3 });
   }
 
   async launchUrl(url) {
-    await this.page.goto("/bank/login");
+    await this.page.goto("/");
   }
 
   async validLogin(username, password) {
