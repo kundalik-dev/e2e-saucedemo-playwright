@@ -16,6 +16,8 @@ class ProductsPage {
 
     // products sorting locators
     this.productSortLoc = page.getByRole("combobox");
+    this.productSortLoc2 = page.getByTestId("product-sort-container");
+
     this.productNameLoc = page.getByTestId("inventory-item-name");
     this.productPriceLoc = page.getByTestId("inventory-item-price");
     this.productDescLoc = page.getByTestId("inventory-item-desc");
@@ -25,7 +27,6 @@ class ProductsPage {
 
     // footer
     this.socialIcons = page.locator("ul.social li");
-    this.socialIcons2 = page.locator("ul.social li a");
     this.footerCopyRightLoc = page.locator("div.footer_copy");
   }
 
