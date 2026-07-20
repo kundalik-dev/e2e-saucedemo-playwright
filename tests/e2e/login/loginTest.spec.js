@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
-import LoginPage from "../pom/LoginPage";
-import ProductsPage from "../pom/ProductsPage";
-import data from "../test-data/loginPage-data.json";
+import LoginPage from "../../../pom/pages/LoginPage";
+import ProductsPage from "../../../pom/pages/ProductsPage";
+import data from "../../../test-data/static/loginPage-data.json";
 
 let loginPage;
 let productsPage;

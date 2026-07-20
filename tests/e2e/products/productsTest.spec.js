@@ -1,9 +1,9 @@
 import { test, expect } from "@playwright/test";
-import LoginPage from "../pom/LoginPage";
-import ProductsPage from "../pom/ProductsPage";
-import loginData from "../test-data/loginPage-data.json";
-import productsData from "../test-data/productsPage-data.json";
-import productsListData from "../test-data/productsList-data.json";
+import LoginPage from "../../../pom/pages/LoginPage";
+import ProductsPage from "../../../pom/pages/ProductsPage";
+import loginData from "../../../test-data/loginPage-data.json";
+import productsData from "../../../test-data/productsPage-data.json";
+import productsListData from "../../../test-data/productsList-data.json";
 
 const data = { ...loginData, ...productsData };
 
