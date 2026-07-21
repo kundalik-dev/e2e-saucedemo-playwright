@@ -5,7 +5,7 @@ import {
   productPageData,
 } from "../../../test-data/static/static-data";
 
-const data = { ...loginPageData, productPageData };
+const data = { ...loginPageData, ...productPageData };
 
 /** @type {LoginPage} */
 let loginPage;
@@ -19,7 +19,7 @@ test.describe("products add to cart @products", () => {
     await loginPage.launchUrl(data.appUrl);
   });
 
-  test("sort product lohi @regression", async ({ page }) => {
+  test("verify_product_sorting_by_price_lohi @regression", async ({ page }) => {
     // login to app
     await loginPage.validLogin(data.username, data.password);
     await page.waitForURL(data.productsPageUrl);
@@ -36,8 +36,11 @@ test.describe("products add to cart @products", () => {
     // Apply sorting on products
     await productsPage.sortProducts({ value: "lohi" });
 
-    // check dom loaded
-    await productsPage.productNameLoc.first().waitFor({ state: "visible" });
+    // check correct sorting is applied and dom is rendered
+    await expect(productsPage.productSortLoc).toHaveValue("lohi");
+    await expect(productsPage.productPriceLoc.first()).toHaveText(
+      `$${expectedPrice[0].toFixed(2)}`,
+    );
 
     // grab new products prices after sorting
     const actualPrice = await productsPage.productPrices();

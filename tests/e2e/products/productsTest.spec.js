@@ -29,7 +29,7 @@ test.describe("handling Products ", () => {
     loginPage = new LoginPage(page);
     productsPage = new ProductsPage(page);
 
-    loginPage.launchUrl(data.appUrl);
+    await loginPage.launchUrl(data.appUrl);
   });
 
   test("verify product page elements load successfully @products @smoke @regression", async ({
