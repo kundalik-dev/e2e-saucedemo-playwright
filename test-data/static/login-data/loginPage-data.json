@@ -1,9 +1,0 @@
-{
-  "appUrl": "/",
-  "username": "standard_user",
-  "password": "secret_sauce",
-
-  "invaliUsername": "testing",
-  "invalidPassword": "testing",
-  "errorMsgText": "Epic sadface: Username and password do not match any user in this service"
-}

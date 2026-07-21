@@ -1,9 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { LoginPage, ProductsPage } from "../../../pom/pages/pages-export";
-import {
-  loginPageData,
-  productPageData,
-} from "../../../../test-data/static/static-data";
+import { loginPageData, productPageData } from "../../data/static/static-data";
 
 const data = { ...loginPageData, ...productPageData };
 
