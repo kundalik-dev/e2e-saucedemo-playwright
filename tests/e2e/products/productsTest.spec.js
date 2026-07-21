@@ -165,9 +165,7 @@ test.describe("handling Products ", () => {
 
   // 🎭 sorting lohi or hilo with data driven approach
   for (const sortOrder of data.sortOrders) {
-    test.only(`verify_product_sorting_by_price_${sortOrder}`, async ({
-      page,
-    }) => {
+    test(`verify_product_sorting_by_price_${sortOrder}`, async ({ page }) => {
       // login to app
       await loginPage.validLogin(data.username, data.password);
 

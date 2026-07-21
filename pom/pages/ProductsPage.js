@@ -34,6 +34,18 @@ class ProductsPage {
     return this.productsPageHeading;
   }
 
+  parsedProductPrice = (priceText) =>
+    priceText.map((price) => parseFloat(price.replace("$", "")));
+
+  async productPrices() {
+    const priceTexts = await this.productPriceLoc.allTextContents();
+    return this.parsedProductPrice(priceTexts);
+  }
+
+  async sortProducts(sortOption) {
+    await this.productSortLoc.selectOption(sortOption);
+  }
+
   async compareProdcutsDetaisl(productName, productPrice, productDescription) {}
 }
 
