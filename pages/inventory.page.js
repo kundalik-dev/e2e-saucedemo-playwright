@@ -1,4 +1,4 @@
-class ProductsPage {
+class InventoryPage {
   /** @param {import('@playwright/test').Page} page */
   constructor(page) {
     this.page = page;
@@ -6,9 +6,7 @@ class ProductsPage {
     // headings
     this.appLogoLoc = page.locator("div.app_logo");
     this.hamburgerIconLoc = page.getByRole("button", { name: "Open Menu" });
-
-    //message locators
-    this.pageHeadingTxtLoc = page.getByText("Products");
+    this.pageHeadingLoc = page.getByText("Products");
 
     // Carts locator
     this.cartIcon = page.locator(".shopping_cart_link");
@@ -31,8 +29,9 @@ class ProductsPage {
     this.footerCopyRightLoc = page.locator("div.footer_copy");
   }
 
-  async productsPageHeading() {
-    return this.productsPageHeading;
+  // heading page text returns : locator
+  getPageHeading() {
+    return this.pageHeadingLoc;
   }
 
   parsedProductPrice = (priceText) =>
@@ -94,4 +93,4 @@ class ProductsPage {
   }
 }
 
-export default ProductsPage;
+export default InventoryPage;
