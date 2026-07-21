@@ -1,0 +1,8 @@
+{
+  "appLogoText": "Swag Labs",
+  "productsPageHeading": "Products",
+  "footerCopyRightText": "© 2026 Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy",
+  "productsPageUrl": "/inventory.html",
+  "socialIconNames": ["Twitter", "Facebook", "LinkedIn"],
+  "sortOrders": ["lohi", "hilo"]
+}
