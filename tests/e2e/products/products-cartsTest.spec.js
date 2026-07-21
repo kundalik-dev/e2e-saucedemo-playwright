@@ -48,4 +48,57 @@ test.describe("products add to cart @products", () => {
     // Assert prices are equal
     expect(expectedPrice).toEqual(actualPrice);
   });
+
+  test("verify_single_product_add_to_cart_and_remove_lifecycle", async ({
+    page,
+  }) => {
+    // login to app
+    await loginPage.validLogin(data.username, data.password);
+
+    // Wait for navigation to products page and check heading isVisible
+    await page.waitForURL(data.productsPageUrl);
+    await expect(productsPage.pageHeadingTxtLoc).toHaveText(
+      data.productsPageHeading,
+    );
+
+    // Search for product and Click on Add to Cart
+    await productsPage.searchProductAddToCart(data.productNameForAddToCart);
+
+    // Assert that the shopping cart badge increments to `1`.
+    expect.soft(await productsPage.shoppingCartValue()).toEqual("1");
+
+    // Assert that the button text changes from "Add to cart" to "Remove".
+    const cartBtnText = await productsPage.cartButtonText(
+      data.productNameForAddToCart,
+    );
+
+    expect(cartBtnText).toContain("Remove");
+
+    // Click "Remove" and verify the badge disappears or decrements.
+    await productsPage.removeProductFromCart(data.productNameForAddToCart);
+
+    await expect(productsPage.shoppingCartBadgeLoc).not.toBeVisible();
+  });
+
+  test("verify_single_product_add_to_cart_and_remove_lifecycle_second_approach @regression", async ({
+    page,
+  }) => {
+    await loginPage.validLogin(data.username, data.password);
+    await page.waitForURL(data.productsPageUrl);
+
+    // Single locator reference reused for both click and assertion — no text snapshots
+    const cartButton = productsPage.getProductCartButton(
+      data.productNameForAddToCart,
+    );
+
+    // Add to cart and assert full state: badge count + button label
+    await cartButton.click();
+    await expect(productsPage.shoppingCartBadgeLoc).toHaveText("1");
+    await expect(cartButton).toHaveText("Remove");
+
+    // Remove from cart and assert full revert: badge gone + button label restored
+    await cartButton.click();
+    await expect(productsPage.shoppingCartBadgeLoc).not.toBeVisible();
+    await expect(cartButton).toHaveText("Add to cart");
+  });
 });

@@ -18,12 +18,13 @@ class ProductsPage {
     this.productSortLoc = page.getByRole("combobox");
     this.productSortLoc2 = page.getByTestId("product-sort-container");
 
+    //prodcuts locators
+    this.productsLoc = page.locator(".inventory_item");
     this.productNameLoc = page.getByTestId("inventory-item-name");
     this.productPriceLoc = page.getByTestId("inventory-item-price");
     this.productDescLoc = page.getByTestId("inventory-item-desc");
-
-    //prodcuts locators
-    this.productsLoc = page.locator(".inventory_item");
+    this.addToCartBtnLoc = page.getByRole("button", { name: "Add to cart" });
+    this.removeFromCartBtnLoc = page.getByRole("button", { name: "Remove" });
 
     // footer
     this.socialIcons = page.locator("ul.social li");
@@ -46,7 +47,51 @@ class ProductsPage {
     await this.productSortLoc.selectOption(sortOption);
   }
 
-  async compareProdcutsDetaisl(productName, productPrice, productDescription) {}
+  // not complete yet
+  async productSearch(productName) {
+    const allProductNames = await this.productNameLoc.allTextContents();
+    // const allProducts = await this.productsLoc;
+    this.productsLoc.fil;
+    const product = allProductNames.map((name) => {
+      allProductNames.filter((value) => {
+        if (value === productName) return;
+      });
+    });
+  }
+
+  async searchProductAddToCart(productName) {
+    await this.productsLoc
+      .filter({ hasText: productName })
+      .filter({ has: this.addToCartBtnLoc })
+      .locator("button")
+      .click();
+  }
+
+  async cartButtonText(productName) {
+    return await this.productsLoc
+      .filter({ hasText: productName })
+      .filter({ has: this.removeFromCartBtnLoc })
+      .locator("button")
+      .textContent();
+  }
+
+  async removeProductFromCart(productName) {
+    const allProducts = await this.productsLoc;
+    await allProducts
+      .filter({ hasText: productName })
+      .filter({ has: this.removeFromCartBtnLoc })
+      .locator("button")
+      .click();
+  }
+
+  async shoppingCartValue() {
+    return await this.shoppingCartBadgeLoc.textContent();
+  }
+
+  // Returns the Add-to-cart / Remove button locator for a product — reusable for click and assertion
+  getProductCartButton(productName) {
+    return this.productsLoc.filter({ hasText: productName }).locator("button");
+  }
 }
 
 export default ProductsPage;
