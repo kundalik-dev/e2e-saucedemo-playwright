@@ -49,6 +49,7 @@ const credentials = {
   },
 };
 
+// auth data
 const authData = {
   appUrl: "/",
   loginLogoText: "Swag Labs",
