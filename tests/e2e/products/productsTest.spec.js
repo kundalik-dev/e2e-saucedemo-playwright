@@ -177,43 +177,77 @@ test.describe("handling Products ", () => {
       const productPricesText =
         await productsPage.productPriceLoc.allTextContents();
 
-      console.log("products Prices are ", productPricesText);
-
       const originalProductsPrice = productPricesText.map((productPrice) => {
         return parseFloat(productPrice.replace("$", ""));
       });
-
-      console.log("original Products price", originalProductsPrice);
 
       // sort product in lohi or hilo
       await productsPage.productSortLoc.selectOption({
         value: `${sortOrder}`,
       });
 
+      // check products cards are visible after sorting
       await expect(productsPage.productPriceLoc.first()).toBeVisible();
 
       // actual sorted prodcuts price form UI
-      const actualProductsSortPriceText =
+      const actualProductsPriceText =
         await productsPage.productPriceLoc.allTextContents();
-      const actualProductsSortPrice = actualProductsSortPriceText.map(
-        (actPrice) => {
-          return parseFloat(actPrice.replace("$", ""));
-        },
-      );
-
-      console.log("actual products price", actualProductsSortPrice);
+      const actualProductsPrice = actualProductsPriceText.map((actPrice) => {
+        return parseFloat(actPrice.replace("$", ""));
+      });
 
       // expected sorted products price
-      let expectedProductsSortPrice;
+      let expectedProductPrice;
 
       if (sortOrder === "lohi") {
-        expectedProductsSortPrice = originalProductsPrice.sort((a, b) => a - b);
-      }
-      if (sortOrder === "hilo") {
-        expectedProductsSortPrice = originalProductsPrice.sort((a, b) => b - a);
+        console.log("original array before sort", originalProductsPrice);
+        expectedProductPrice = originalProductsPrice.sort((a, b) => a - b);
+        console.log("sorted array is", expectedProductPrice);
+        console.log("original array after sort", originalProductsPrice);
+      } else if (sortOrder === "hilo") {
+        expectedProductPrice = originalProductsPrice.sort((a, b) => b - a);
+      } else {
+        console.log("provide valide sort order");
       }
 
-      expect(actualProductsSortPrice).toEqual(expectedProductsSortPrice);
+      expect(actualProductsPrice).toEqual(expectedProductPrice);
+    });
+  }
+
+  // Optimised version of above
+  for (const sortOrder of data.sortOrders) {
+    test(`verify product sorting by price: ${sortOrder}`, async ({ page }) => {
+      await test.step("Login and navigate to products page", async () => {
+        await loginPage.validLogin(data.username, data.password);
+        await page.waitForURL(data.productsPageUrl);
+        await expect.soft(productsPage.productNameLoc.first()).toBeVisible();
+      });
+
+      // Helper function to extract and parse numeric prices from locators
+      const getParsedPrices = async () => {
+        const texts = await productsPage.productPriceLoc.allTextContents();
+        return texts.map((text) => parseFloat(text.replace(/[^0-9.]/g, "")));
+      };
+
+      const originalPrices = await getParsedPrices();
+
+      await test.step(`Sort products by ${sortOrder} via UI`, async () => {
+        await productsPage.productSortLoc.selectOption({ value: sortOrder });
+        // Ensure the UI updates by checking the first locator attachment state
+        await productsPage.productPriceLoc
+          .first()
+          .waitFor({ state: "visible" });
+      });
+
+      const actualPrices = await getParsedPrices();
+
+      // Generate expected array using non-mutating .toSorted()
+      const expectedPrices =
+        sortOrder === "lohi"
+          ? originalPrices.toSorted((a, b) => a - b)
+          : originalPrices.toSorted((a, b) => b - a);
+
+      expect(actualPrices).toEqual(expectedPrices);
     });
   }
 });
