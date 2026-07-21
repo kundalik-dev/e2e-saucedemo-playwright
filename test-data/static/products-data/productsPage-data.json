@@ -5,5 +5,12 @@
   "productsPageUrl": "/inventory.html",
   "socialIconNames": ["Twitter", "Facebook", "LinkedIn"],
   "sortOrders": ["lohi", "hilo"],
-  "productNameForAddToCart": "Sauce Labs Bolt T-Shirt"
+  "addToCart": {
+    "productName": "Sauce Labs Bolt T-Shirt",
+    "productCount": "1"
+  },
+  "buttonLabels": {
+    "addToCart": "Add to cart",
+    "remove": "Remove"
+  }
 }

@@ -88,17 +88,19 @@ test.describe("products add to cart @products", () => {
 
     // Single locator reference reused for both click and assertion — no text snapshots
     const cartButton = productsPage.getProductCartButton(
-      data.productNameForAddToCart,
+      data.addToCart.productName,
     );
 
     // Add to cart and assert full state: badge count + button label
     await cartButton.click();
-    await expect(productsPage.shoppingCartBadgeLoc).toHaveText("1");
-    await expect(cartButton).toHaveText("Remove");
+    await expect(productsPage.shoppingCartBadgeLoc).toHaveText(
+      data.addToCart.productCount,
+    );
+    await expect(cartButton).toHaveText(data.buttonLabels.remove);
 
     // Remove from cart and assert full revert: badge gone + button label restored
     await cartButton.click();
     await expect(productsPage.shoppingCartBadgeLoc).not.toBeVisible();
-    await expect(cartButton).toHaveText("Add to cart");
+    await expect(cartButton).toHaveText(data.buttonLabels.addToCart);
   });
 });

@@ -5,7 +5,5 @@
 
   "invaliUsername": "testing",
   "invalidPassword": "testing",
-  "errorMsgText": "Epic sadface: Username and password do not match any user in this service",
-
-  "productsPageHeading": "Products"
+  "errorMsgText": "Epic sadface: Username and password do not match any user in this service"
 }
