@@ -4,7 +4,7 @@
 
 ---
 
-## Part 1: How GitHub Actions decides *when* to run at all
+## Part 1: How GitHub Actions decides _when_ to run at all
 
 Every workflow file starts with an `on:` block. Think of it as a list of doorbells — GitHub only walks over and runs your workflow when one of those specific doorbells gets pressed. Nothing else, ever.
 
@@ -18,7 +18,7 @@ on:
     branches: [main, master]
 ```
 
-There are two doorbells here: `push` and `pull_request`. Both are wired up — so yes, this workflow runs for **both** kinds of events. But each doorbell has its own rules for *which branch* counts, and they're not the same rule. This is the part that trips people up.
+There are two doorbells here: `push` and `pull_request`. Both are wired up — so yes, this workflow runs for **both** kinds of events. But each doorbell has its own rules for _which branch_ counts, and they're not the same rule. This is the part that trips people up.
 
 ### The `push` doorbell
 
@@ -37,7 +37,7 @@ So right now, if you're doing work on `qabranch` and pushing commits to it direc
 
 ### The `pull_request` doorbell
 
-This is the one that surprises people. `pull_request`'s `branches:` filter does **not** look at the branch you're working on (the "head" / "source" branch). It looks at the branch the PR is **targeting** — the "base" branch, i.e. the one you'd merge *into*.
+This is the one that surprises people. `pull_request`'s `branches:` filter does **not** look at the branch you're working on (the "head" / "source" branch). It looks at the branch the PR is **targeting** — the "base" branch, i.e. the one you'd merge _into_.
 
 ```
 PR:  qabranch → main         →  ✅ triggers (base is "main", which is in the list)
@@ -45,25 +45,25 @@ PR:  feature/login → main    →  ✅ triggers (base is "main")
 PR:  feature/login → qabranch →  ❌ does NOT trigger (base is "qabranch", NOT in the list)
 ```
 
-So a PR *from* `qabranch` *into* `main` will run this workflow — because the destination (`main`) matches, regardless of where the PR is coming from. But a PR that targets `qabranch` as its destination won't run anything, because `qabranch` was never added to the list.
+So a PR _from_ `qabranch` _into_ `main` will run this workflow — because the destination (`main`) matches, regardless of where the PR is coming from. But a PR that targets `qabranch` as its destination won't run anything, because `qabranch` was never added to the list.
 
 ### Putting it together for this repo, today
 
-| What you do | Does CI run? | Why |
-| --- | --- | --- |
-| Push a commit directly to `main` | ✅ Yes | `push` + branch is `main` |
-| Push a commit directly to `qabranch` | ❌ No | `qabranch` not in `push.branches` |
-| Open a PR from `feature/x` into `main` | ✅ Yes | `pull_request` + base is `main` |
-| Open a PR from `feature/x` into `qabranch` | ❌ No | `qabranch` not in `pull_request.branches` |
-| Open a PR from `qabranch` into `main` | ✅ Yes | `pull_request` + base is `main` |
+| What you do                                | Does CI run? | Why                                       |
+| ------------------------------------------ | ------------ | ----------------------------------------- |
+| Push a commit directly to `main`           | ✅ Yes       | `push` + branch is `main`                 |
+| Push a commit directly to `qabranch`       | ❌ No        | `qabranch` not in `push.branches`         |
+| Open a PR from `feature/x` into `main`     | ✅ Yes       | `pull_request` + base is `main`           |
+| Open a PR from `feature/x` into `qabranch` | ❌ No        | `qabranch` not in `pull_request.branches` |
+| Open a PR from `qabranch` into `main`      | ✅ Yes       | `pull_request` + base is `main`           |
 
 The practical effect: `qabranch` is currently a CI blind spot. Anything pushed there runs untested until it either gets PR'd into `main` (where it finally gets checked) or someone remembers to run tests locally.
 
 ---
 
-## Part 2: What's the right setup for *this* practice app?
+## Part 2: What's the right setup for _this_ practice app?
 
-You're using a `feature → qabranch → main` style flow (a lightweight version of what teams call a "promotion" branching model: work lands on a QA/staging branch first, gets validated, *then* gets promoted to `main`). For that flow to actually be worth practicing, `qabranch` needs the same CI safety net `main` gets — otherwise the "QA" step isn't really checking anything.
+You're using a `feature → qabranch → main` style flow (a lightweight version of what teams call a "promotion" branching model: work lands on a QA/staging branch first, gets validated, _then_ gets promoted to `main`). For that flow to actually be worth practicing, `qabranch` needs the same CI safety net `main` gets — otherwise the "QA" step isn't really checking anything.
 
 **Recommended trigger block** (not yet applied — see bottom of doc):
 
@@ -81,7 +81,7 @@ What this buys you:
 - PR from `qabranch` → `main` → tests run again as a gate before the "promotion" to main.
 - PR from any `feature/*` branch → `qabranch` → also runs now, since `qabranch` is a valid target.
 
-This is the same shape as real-world setups: an integration/staging branch gets its own CI coverage, not just the production branch. As the repo grows, a common next step is to *stop* naming every branch explicitly under `pull_request` (just drop `branches:` entirely there, so **every** PR to **anything** gets checked) while keeping `push` restricted to just the "important" branches (`main`, `qabranch`) to avoid burning CI minutes on every tiny WIP push to a throwaway feature branch. For now, with a small number of named branches, being explicit like above is easier to reason about while you're still building the muscle memory for how these triggers behave.
+This is the same shape as real-world setups: an integration/staging branch gets its own CI coverage, not just the production branch. As the repo grows, a common next step is to _stop_ naming every branch explicitly under `pull_request` (just drop `branches:` entirely there, so **every** PR to **anything** gets checked) while keeping `push` restricted to just the "important" branches (`main`, `qabranch`) to avoid burning CI minutes on every tiny WIP push to a throwaway feature branch. For now, with a small number of named branches, being explicit like above is easier to reason about while you're still building the muscle memory for how these triggers behave.
 
 ---
 
@@ -89,7 +89,7 @@ This is the same shape as real-world setups: an integration/staging branch gets 
 
 There are actually **two separate on/off switches** for browsers in a Playwright project, and only one of them is set to "Chromium only" right now. This is the part that's easy to miss.
 
-### Switch 1 — which browsers Playwright *installs* (binaries)
+### Switch 1 — which browsers Playwright _installs_ (binaries)
 
 This happens in CI via:
 
@@ -100,7 +100,7 @@ This happens in CI via:
 
 `playwright install` downloads actual browser binaries (Chromium, Firefox, WebKit) plus their OS-level dependencies, onto the CI runner's disk. **With no browser name given, it downloads all three**, every single run — regardless of whether you'll ever use Firefox or WebKit. This is pure download-and-disk-space cost; it doesn't run any tests by itself.
 
-### Switch 2 — which browsers Playwright actually *runs tests in*
+### Switch 2 — which browsers Playwright actually _runs tests in_
 
 This is controlled by `projects` in `playwright.config.js`:
 
@@ -127,7 +127,7 @@ Only the `chromium` project is active (Firefox/WebKit are commented out). So whe
 
 ### So what's the actual problem?
 
-Switch 2 (which browsers *run*) is already Chromium-only. Switch 1 (which browsers get *installed*) is not — CI installs all three browser binaries every run, then only ever uses one of them. It's like packing suitcases for Paris, London, and Tokyo, and only ever going to Paris. The download step is pure waste: slower CI runs, more bandwidth, more disk churn, for browsers that never get used.
+Switch 2 (which browsers _run_) is already Chromium-only. Switch 1 (which browsers get _installed_) is not — CI installs all three browser binaries every run, then only ever uses one of them. It's like packing suitcases for Paris, London, and Tokyo, and only ever going to Paris. The download step is pure waste: slower CI runs, more bandwidth, more disk churn, for browsers that never get used.
 
 ### How to fix it (not yet applied)
 
@@ -146,7 +146,7 @@ env:
 run: pnpm exec playwright install --with-deps ${{ env.PW_BROWSERS }}
 ```
 
-Then adding Firefox back later is a one-line change: `PW_BROWSERS: chromium firefox` — both the install step *and* (separately) `playwright.config.js`'s `projects` array would need Firefox uncommented for it to actually be tested, but at least the install step would no longer be the thing silently downloading browsers nobody asked for.
+Then adding Firefox back later is a one-line change: `PW_BROWSERS: chromium firefox` — both the install step _and_ (separately) `playwright.config.js`'s `projects` array would need Firefox uncommented for it to actually be tested, but at least the install step would no longer be the thing silently downloading browsers nobody asked for.
 
 ---
 

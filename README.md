@@ -40,6 +40,7 @@ An end-to-end UI test automation framework for **[saucedemo.com](https://www.sau
 | Design Pattern  | Page Object Model (POM)                              |
 | Test Data       | JSON / JS fixtures                                   |
 | Package Manager | [pnpm](https://pnpm.io/)                             |
+| Linting/Format  | ESLint (flat config) + Prettier                      |
 | Reporting       | Playwright HTML Reporter                             |
 | CI/CD           | GitHub Actions                                       |
 | Target App      | [saucedemo.com](https://www.saucedemo.com/)          |
@@ -52,9 +53,10 @@ An end-to-end UI test automation framework for **[saucedemo.com](https://www.sau
 03-e2e-saucedemo-pw-framework/
 ├── .github/
 │   └── workflows/
-│       └── playwright.yml        # CI pipeline (GitHub Actions)
+│       ├── playwright.yml              # CI: lint job → test job (needs: lint)
+│       └── update-visual-baselines.yml # Manual-only: regenerates visual snapshots on Linux
 ├── docs/
-│   ├── frameworks/                # Framework design notes & learnings
+│   ├── frameworks/                # Target architecture (01-07) + implementation logs (08-11)
 │   └── test-cases/                # Manual/automation test case documentation
 ├── pages/                         # Page Object Model classes
 │   ├── login.page.js
@@ -73,6 +75,8 @@ An end-to-end UI test automation framework for **[saucedemo.com](https://www.sau
 ├── visual-baselines/               # Approved snapshots for visual regression tests
 ├── playwright-report/              # Generated HTML report (git-ignored)
 ├── test-results/                   # Raw test run artifacts (git-ignored)
+├── eslint.config.mjs               # ESLint flat config (+ eslint-plugin-playwright on specs)
+├── .prettierrc.json / .prettierignore
 ├── playwright.config.js            # Global Playwright configuration
 ├── package.json
 └── CLAUDE.md / AGENTS.md           # AI-assistant & contributor guidelines
@@ -123,6 +127,12 @@ pnpm run test --debug
 
 # Open the last HTML report
 pnpm run report
+
+# Lint / format (CI runs these as a gate before tests)
+pnpm run lint
+pnpm run lint:fix
+pnpm run format:check
+pnpm run format
 ```
 
 ---
@@ -208,14 +218,14 @@ Full contributor/AI-agent guidelines live in [`CLAUDE.md`](CLAUDE.md) / [`AGENTS
 
 ## CI/CD
 
-Tests run automatically via **GitHub Actions** (see [`.github/workflows/playwright.yml`](.github/workflows/playwright.yml)) on every push and pull request to `main`/`master`:
+**GitHub Actions** (see [`.github/workflows/playwright.yml`](.github/workflows/playwright.yml)) runs on every push and pull request to `main`/`master` (not currently `qabranch` — see `docs/frameworks/11-ci-triggers-and-browser-install-explained.md`), as two jobs:
 
-1. Checkout code
-2. Set up Node.js (LTS) and pnpm
-3. Install dependencies
-4. Install Playwright browsers
-5. Run the test suite
-6. Upload the HTML report as a build artifact
+1. **`lint`** — installs deps, runs `pnpm run lint` (ESLint) and `pnpm run format:check` (Prettier).
+2. **`test`** (`needs: lint`, only runs if lint passes) — installs Playwright browsers, runs the suite, uploads the HTML report as a build artifact.
+
+Actions are pinned to their current major versions (`actions/checkout@v7`, `actions/setup-node@v7`, `actions/upload-artifact@v7`) — check `https://api.github.com/repos/<owner>/<repo>/releases/latest` before bumping, GitHub periodically deprecates old runtimes those majors depend on.
+
+A separate, **manually-triggered** workflow, [`update-visual-baselines.yml`](.github/workflows/update-visual-baselines.yml) (`workflow_dispatch` only — never runs on push/PR), regenerates the visual regression baselines under `visual-baselines/` on the same `ubuntu-latest` runner the real CI uses, and commits them back. Run it from the **Actions** tab only after an intentional UI change — see `docs/frameworks/10-ci-fixes-node-runner-and-visual-baselines.md` for the full walkthrough and why it exists (snapshot filenames are OS-specific, so a baseline captured on a dev machine can't satisfy Linux CI).
 
 A Jenkins pipeline is also planned (see [Roadmap](#roadmap)).
 
@@ -230,14 +240,19 @@ A Jenkins pipeline is also planned (see [Roadmap](#roadmap)).
 - [ ] CSV-driven data-source support
 - [ ] Allure reporting
 - [ ] Jenkins pipeline
+- [ ] Extend CI triggers (`push`/`pull_request`) to cover `qabranch`, not just `main`/`master`
+- [ ] Install only the Chromium binary in CI (`playwright install --with-deps chromium`) instead of all browsers, since only the `chromium` project is enabled
+
+> ESLint + Prettier, GitHub Actions action-version fixes, and the `Update Visual Baselines` workflow are already done — see [CI/CD](#cicd) above.
 
 ---
 
 ## Contributing
 
-1. Create a feature branch from `main`.
+1. Branch off `qabranch` for new work; `qabranch` gets promoted into `main` via PR once validated (a lightweight `feature → qabranch → main` flow).
 2. Follow the [naming](#test-case-naming-convention) and [coding](#coding-conventions) conventions above.
-3. Ensure `pnpm run test` passes locally before opening a PR.
+3. Run `pnpm run lint` and `pnpm run format:check` (or `lint:fix`/`format` to auto-fix) — CI gates the test job on these passing.
+4. Ensure `pnpm run test` passes locally before opening a PR.
 
 ---
 
