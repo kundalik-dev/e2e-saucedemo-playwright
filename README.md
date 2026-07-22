@@ -1,6 +1,6 @@
-# 🧪 SauceDemo E2E Automation Framework
+# 🎭 SauceDemo E2E Automation Framework
 
-[![Playwright Tests](https://github.com/actions/checkout/badge.svg)](.github/workflows/playwright.yml)
+![Playwright Tests](https://github.com/kundalik-dev/e2e-saucedemo-playwright/actions/workflows/playwright.yml/badge.svg)
 ![Playwright](https://img.shields.io/badge/Playwright-1.61-2EAD33?logo=playwright&logoColor=white)
 ![Node](https://img.shields.io/badge/Node-LTS-339933?logo=node.js&logoColor=white)
 ![pnpm](https://img.shields.io/badge/pnpm-10.32-F69220?logo=pnpm&logoColor=white)
@@ -12,22 +12,24 @@ An end-to-end UI test automation framework for **[saucedemo.com](https://www.sau
 
 ## Table of Contents
 
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Prerequisites](#prerequisites)
-- [Getting Started](#getting-started)
-- [Running Tests](#running-tests)
-- [Test Reports](#test-reports)
-- [Architecture](#architecture)
-  - [Page Objects](#page-objects)
-  - [Tests](#tests)
-  - [Test Data](#test-data)
-- [Test Case Naming Convention](#test-case-naming-convention)
-- [Coding Conventions](#coding-conventions)
-- [CI/CD](#cicd)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
-- [License](#license)
+- [🎭 SauceDemo E2E Automation Framework](#-saucedemo-e2e-automation-framework)
+  - [Table of Contents](#table-of-contents)
+  - [Tech Stack](#tech-stack)
+  - [Project Structure](#project-structure)
+  - [Prerequisites](#prerequisites)
+  - [Getting Started](#getting-started)
+  - [Running Tests](#running-tests)
+  - [Test Reports](#test-reports)
+  - [Architecture](#architecture)
+    - [Page Objects](#page-objects)
+    - [Tests](#tests)
+    - [Test Data](#test-data)
+  - [Test Case Naming Convention](#test-case-naming-convention)
+  - [Coding Conventions](#coding-conventions)
+  - [CI/CD](#cicd)
+  - [Roadmap](#roadmap)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ---
 
