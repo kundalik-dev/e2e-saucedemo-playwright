@@ -33,16 +33,16 @@ An end-to-end UI test automation framework for **[saucedemo.com](https://www.sau
 
 ## Tech Stack
 
-| Category         | Tool                                                        |
-| ----------------- | ----------------------------------------------------------- |
-| Test Runner       | [Playwright Test](https://playwright.dev/docs/intro)        |
-| Language           | JavaScript (ESM)                                             |
-| Design Pattern     | Page Object Model (POM)                                      |
-| Test Data          | JSON / JS fixtures                                            |
-| Package Manager   | [pnpm](https://pnpm.io/)                                      |
-| Reporting          | Playwright HTML Reporter                                       |
-| CI/CD              | GitHub Actions                                                  |
-| Target App         | [saucedemo.com](https://www.saucedemo.com/)                     |
+| Category        | Tool                                                 |
+| --------------- | ---------------------------------------------------- |
+| Test Runner     | [Playwright Test](https://playwright.dev/docs/intro) |
+| Language        | JavaScript (ESM)                                     |
+| Design Pattern  | Page Object Model (POM)                              |
+| Test Data       | JSON / JS fixtures                                   |
+| Package Manager | [pnpm](https://pnpm.io/)                             |
+| Reporting       | Playwright HTML Reporter                             |
+| CI/CD           | GitHub Actions                                       |
+| Target App      | [saucedemo.com](https://www.saucedemo.com/)          |
 
 ---
 
@@ -150,7 +150,7 @@ Located in [`pages/`](pages). One class per page, named `<pagename>.page.js`, ex
 Each page object:
 
 - Accepts a Playwright `page` in its constructor and stores it as `this.page`.
-- Declares all locators as constructor properties, grouped by UI region with `//` comments (e.g. *Login Form Inputs*, *Carts locator*, *footer*).
+- Declares all locators as constructor properties, grouped by UI region with `//` comments (e.g. _Login Form Inputs_, _Carts locator_, _footer_).
 - Exposes action methods (`login`, `launchUrl`, `sortProducts`, …) that operate on those locators.
 - Tests never call `page.locator(...)` directly — they always go through a page object's named locator or method.
 
@@ -158,11 +158,11 @@ Each page object:
 
 Located in [`tests/`](tests), split by scope:
 
-| Folder        | Purpose                                                                 |
-| ------------- | ------------------------------------------------------------------------ |
-| `tests/ui`    | Validates a **single page** in isolation                                 |
-| `tests/e2e`   | Spans **multiple page objects** or a full user journey                    |
-| `tests/api`   | API-level tests                                                           |
+| Folder      | Purpose                                                |
+| ----------- | ------------------------------------------------------ |
+| `tests/ui`  | Validates a **single page** in isolation               |
+| `tests/e2e` | Spans **multiple page objects** or a full user journey |
+| `tests/api` | API-level tests                                        |
 
 Each spec file instantiates the relevant page object(s) in `test.beforeEach`, drives the flow, and asserts with `expect` / `expect.soft`.
 

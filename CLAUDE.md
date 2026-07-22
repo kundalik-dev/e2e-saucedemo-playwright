@@ -62,29 +62,38 @@ pnpm exec playwright test --update-snapshots
 
 # open the last HTML report
 pnpm run report
+
+# lint (must pass before pushing — CI runs this as a gate before tests)
+pnpm run lint
+pnpm run lint:fix
+
+# check/apply Prettier formatting
+pnpm run format:check
+pnpm run format
 ```
 
 ## Project Status
 
 Keep this section current — it's the fastest way for an agent to know what's real vs. planned before writing new tests or page objects.
 
-| Area                                                 | State                                                                                                                                       |
-| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pages/login.page.js`                                | ✅ Implemented                                                                                                                              |
-| `pages/inventory.page.js`                            | ✅ Implemented (`productSearch` method is an incomplete stub — do not call it; use `searchProductAddToCart`/`getProductCartButton` instead) |
-| `pages/cart.page.js`                                 | ⬜ Empty — not started                                                                                                                      |
-| `pages/checkout.page.js`                             | ⬜ Empty — not started                                                                                                                      |
-| `pages/payment.page.js`                              | ⬜ Empty — not started                                                                                                                      |
-| `tests/ui/auth.ui.spec.js`                           | ✅ Implemented                                                                                                                              |
-| `tests/e2e/auth.e2e.spec.js`                         | ✅ Implemented                                                                                                                              |
-| `tests/e2e/cart.e2e.spec.js`                         | ⬜ Empty — not started                                                                                                                      |
-| `tests/e2e/inventory.e2e.spec.js`                    | ⬜ Empty — not started                                                                                                                      |
-| `tests/e2e/purchase.e2e.spec.js`                     | ⬜ Empty — not started                                                                                                                      |
-| `tests/api/*`                                        | ⬜ Not started (only `.gitkeep`)                                                                                                            |
-| `global-setup.js` / `storageState` / custom fixtures | ⬜ Not started — every spec still logs in via the UI                                                                                        |
-| CI (GitHub Actions)                                  | ✅ `.github/workflows/playwright.yml` runs the full suite on push/PR to `main`/`master` and uploads the HTML report artifact                |
-| Jenkins pipeline                                     | ⬜ Not started                                                                                                                              |
-| Allure reporting                                     | ⬜ Not started (reporter is `html` only)                                                                                                    |
+| Area                                                 | State                                                                                                                                                                                      |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `pages/login.page.js`                                | ✅ Implemented                                                                                                                                                                             |
+| `pages/inventory.page.js`                            | ✅ Implemented                                                                                                                                                                             |
+| `pages/cart.page.js`                                 | ⬜ Empty — not started                                                                                                                                                                     |
+| `pages/checkout.page.js`                             | ⬜ Empty — not started                                                                                                                                                                     |
+| `pages/payment.page.js`                              | ⬜ Empty — not started                                                                                                                                                                     |
+| `tests/ui/auth.ui.spec.js`                           | ✅ Implemented                                                                                                                                                                             |
+| `tests/e2e/auth.e2e.spec.js`                         | ✅ Implemented                                                                                                                                                                             |
+| `tests/e2e/cart.e2e.spec.js`                         | ⬜ Empty — not started                                                                                                                                                                     |
+| `tests/e2e/inventory.e2e.spec.js`                    | ⬜ Empty — not started                                                                                                                                                                     |
+| `tests/e2e/purchase.e2e.spec.js`                     | ⬜ Empty — not started                                                                                                                                                                     |
+| `tests/api/*`                                        | ⬜ Not started (only `.gitkeep`)                                                                                                                                                           |
+| `global-setup.js` / `storageState` / custom fixtures | ⬜ Not started — every spec still logs in via the UI                                                                                                                                       |
+| CI (GitHub Actions)                                  | ✅ `.github/workflows/playwright.yml` runs the full suite on push/PR to `main`/`master` and uploads the HTML report artifact                                                               |
+| Jenkins pipeline                                     | ⬜ Not started                                                                                                                                                                             |
+| Allure reporting                                     | ⬜ Not started (reporter is `html` only)                                                                                                                                                   |
+| ESLint + Prettier                                    | ✅ `eslint.config.mjs` (flat config, `eslint-plugin-playwright` on specs) + `.prettierrc.json`; `pnpm lint`/`pnpm format:check` gate CI. See `docs/frameworks/09-eslint-prettier-setup.md` |
 
 When you finish implementing something in this table, update its row instead of leaving it stale.
 

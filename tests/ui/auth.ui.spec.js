@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import LoginPage from "../../pages/login.page";
-import { credentials, authData } from "../../test-data/auth-data";
+import { authData } from "../../test-data/auth-data";
 
 test.describe("Authentication UI tests", () => {
   /** @type {LoginPage} */

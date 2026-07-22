@@ -62,29 +62,38 @@ pnpm exec playwright test --update-snapshots
 
 # open the last HTML report
 pnpm run report
+
+# lint (must pass before pushing — CI runs this as a gate before tests)
+pnpm run lint
+pnpm run lint:fix
+
+# check/apply Prettier formatting
+pnpm run format:check
+pnpm run format
 ```
 
 ## Project Status
 
 Keep this section current — it's the fastest way for an agent to know what's real vs. planned before writing new tests or page objects.
 
-| Area | State |
-| --- | --- |
-| `pages/login.page.js` | ✅ Implemented |
-| `pages/inventory.page.js` | ✅ Implemented (`productSearch` method is an incomplete stub — do not call it; use `searchProductAddToCart`/`getProductCartButton` instead) |
-| `pages/cart.page.js` | ⬜ Empty — not started |
-| `pages/checkout.page.js` | ⬜ Empty — not started |
-| `pages/payment.page.js` | ⬜ Empty — not started |
-| `tests/ui/auth.ui.spec.js` | ✅ Implemented |
-| `tests/e2e/auth.e2e.spec.js` | ✅ Implemented |
-| `tests/e2e/cart.e2e.spec.js` | ⬜ Empty — not started |
-| `tests/e2e/inventory.e2e.spec.js` | ⬜ Empty — not started |
-| `tests/e2e/purchase.e2e.spec.js` | ⬜ Empty — not started |
-| `tests/api/*` | ⬜ Not started (only `.gitkeep`) |
-| `global-setup.js` / `storageState` / custom fixtures | ⬜ Not started — every spec still logs in via the UI |
-| CI (GitHub Actions) | ✅ `.github/workflows/playwright.yml` runs the full suite on push/PR to `main`/`master` and uploads the HTML report artifact |
-| Jenkins pipeline | ⬜ Not started |
-| Allure reporting | ⬜ Not started (reporter is `html` only) |
+| Area                                                 | State                                                                                                                                                                                      |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `pages/login.page.js`                                | ✅ Implemented                                                                                                                                                                             |
+| `pages/inventory.page.js`                            | ✅ Implemented                                                                                                                                                                             |
+| `pages/cart.page.js`                                 | ⬜ Empty — not started                                                                                                                                                                     |
+| `pages/checkout.page.js`                             | ⬜ Empty — not started                                                                                                                                                                     |
+| `pages/payment.page.js`                              | ⬜ Empty — not started                                                                                                                                                                     |
+| `tests/ui/auth.ui.spec.js`                           | ✅ Implemented                                                                                                                                                                             |
+| `tests/e2e/auth.e2e.spec.js`                         | ✅ Implemented                                                                                                                                                                             |
+| `tests/e2e/cart.e2e.spec.js`                         | ⬜ Empty — not started                                                                                                                                                                     |
+| `tests/e2e/inventory.e2e.spec.js`                    | ⬜ Empty — not started                                                                                                                                                                     |
+| `tests/e2e/purchase.e2e.spec.js`                     | ⬜ Empty — not started                                                                                                                                                                     |
+| `tests/api/*`                                        | ⬜ Not started (only `.gitkeep`)                                                                                                                                                           |
+| `global-setup.js` / `storageState` / custom fixtures | ⬜ Not started — every spec still logs in via the UI                                                                                                                                       |
+| CI (GitHub Actions)                                  | ✅ `.github/workflows/playwright.yml` runs the full suite on push/PR to `main`/`master` and uploads the HTML report artifact                                                               |
+| Jenkins pipeline                                     | ⬜ Not started                                                                                                                                                                             |
+| Allure reporting                                     | ⬜ Not started (reporter is `html` only)                                                                                                                                                   |
+| ESLint + Prettier                                    | ✅ `eslint.config.mjs` (flat config, `eslint-plugin-playwright` on specs) + `.prettierrc.json`; `pnpm lint`/`pnpm format:check` gate CI. See `docs/frameworks/09-eslint-prettier-setup.md` |
 
 When you finish implementing something in this table, update its row instead of leaving it stale.
 
@@ -128,7 +137,7 @@ When you finish implementing something in this table, update its row instead of 
 
 ### docs
 
-- `docs/frameworks/` — reference/target-architecture notes (framework blueprint, test-data strategy, UI-vs-E2E distinction, visual testing, learnings). These describe where the framework is *headed*, not necessarily what's implemented today — cross-check against [Project Status](#project-status) before assuming something described there already exists.
+- `docs/frameworks/` — reference/target-architecture notes (framework blueprint, test-data strategy, UI-vs-E2E distinction, visual testing, learnings). These describe where the framework is _headed_, not necessarily what's implemented today — cross-check against [Project Status](#project-status) before assuming something described there already exists.
 - `docs/test-cases/` — actual test case documentation for this repo (manual + automation test case lists).
 
 ### CI/CD Pipeline
@@ -150,15 +159,15 @@ When you finish implementing something in this table, update its row instead of 
 
 Defined in `test-data/auth-data.js` (`credentials.valid.*` / `credentials.invalid.*`), all with password `secret_sauce` unless noted:
 
-| Username | Type | Notes |
-| --- | --- | --- |
-| `standard_user` | valid | Full access, no quirks |
-| `performance_glitch_user` | valid | Simulates slow page loads |
-| `error_user` | valid | Triggers various UI errors |
-| `visual_user` | valid | For visual regression tests |
-| `locked_out_user` | invalid | Blocked at login; expects `"Epic sadface: Sorry, this user has been locked out."` |
-| `problem_user` | invalid | Various UI/rendering problems |
-| `invalid_user` | invalid | Wrong password; expects `"Epic sadface: Username and password do not match any user in this service"` |
+| Username                  | Type    | Notes                                                                                                 |
+| ------------------------- | ------- | ----------------------------------------------------------------------------------------------------- |
+| `standard_user`           | valid   | Full access, no quirks                                                                                |
+| `performance_glitch_user` | valid   | Simulates slow page loads                                                                             |
+| `error_user`              | valid   | Triggers various UI errors                                                                            |
+| `visual_user`             | valid   | For visual regression tests                                                                           |
+| `locked_out_user`         | invalid | Blocked at login; expects `"Epic sadface: Sorry, this user has been locked out."`                     |
+| `problem_user`            | invalid | Various UI/rendering problems                                                                         |
+| `invalid_user`            | invalid | Wrong password; expects `"Epic sadface: Username and password do not match any user in this service"` |
 
 ## Test cases naming
 

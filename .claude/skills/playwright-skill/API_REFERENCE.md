@@ -301,7 +301,7 @@ await page.waitForLoadState("domcontentloaded");
 await page.waitForFunction(() => document.querySelector(".loaded"));
 await page.waitForFunction(
   (text) => document.body.innerText.includes(text),
-  "Content loaded",
+  "Content loaded"
 );
 
 // Wait for response
@@ -311,7 +311,7 @@ const response = await responsePromise;
 
 // Wait for request
 await page.waitForRequest(
-  (request) => request.url().includes("/api/") && request.method() === "POST",
+  (request) => request.url().includes("/api/") && request.method() === "POST"
 );
 
 // Custom timeout

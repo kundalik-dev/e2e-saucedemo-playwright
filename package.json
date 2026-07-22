@@ -1,18 +1,31 @@
 {
   "name": "03-playwright-js-pom-practice",
   "version": "1.0.0",
-  "description": "",
+  "description": "E2E UI test automation framework for saucedemo.com using Playwright Test and the Page Object Model.",
   "main": "index.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
-    "test": "npx playwright test",
-    "report": "npx playwright show-report"
+    "test": "playwright test",
+    "report": "playwright show-report",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.32.1",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.61.1",
-    "@types/node": "^26.1.1"
+    "@types/node": "^26.1.1",
+    "eslint": "^10.7.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-playwright": "^2.10.5",
+    "globals": "^17.7.0",
+    "prettier": "^3.9.6"
   }
 }

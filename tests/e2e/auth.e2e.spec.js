@@ -30,10 +30,10 @@ test.describe("Authentication E2E tests", () => {
 
     // Assert
     await expect(inventoryPage.pageHeadingLoc).toBeVisible();
-    expect(await page.url()).toContain(inventoryData.pageUrl);
+    expect(page.url()).toContain(inventoryData.pageUrl);
   });
 
-  test("should show error for locked_out_user", async ({ page }) => {
+  test("should show error for locked_out_user", async () => {
     // arrange
     const { username, password, expectedError } =
       credentials.invalid.locked_out_user;
@@ -45,7 +45,7 @@ test.describe("Authentication E2E tests", () => {
     await expect(loginPage.getErrorMessage()).toHaveText(expectedError);
   });
 
-  test("should handle invalid user", async ({ page }) => {
+  test("should handle invalid user", async () => {
     // arrange
     const { username, password, expectedError } =
       credentials.invalid.invalid_user;
@@ -57,18 +57,15 @@ test.describe("Authentication E2E tests", () => {
     await expect(loginPage.getErrorMessage()).toHaveText(expectedError);
   });
 
-  test("should clear error message when clicking X button", async ({
-    page,
-  }) => {
+  test("should clear error message when clicking X button", async () => {
     // arrange
-    const { username, password, expectedError } =
-      credentials.invalid.locked_out_user;
+    const { username, password } = credentials.invalid.locked_out_user;
 
     // act
     await loginPage.login(username, password);
     await loginPage.closeErrorMessage();
 
     // assert
-    await expect(loginPage.getErrorMessageCard()).not.toBeVisible();
+    await expect(loginPage.getErrorMessageCard()).toBeHidden();
   });
 });

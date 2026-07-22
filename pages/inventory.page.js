@@ -46,18 +46,6 @@ class InventoryPage {
     await this.productSortLoc.selectOption(sortOption);
   }
 
-  // not complete yet
-  async productSearch(productName) {
-    const allProductNames = await this.productNameLoc.allTextContents();
-    // const allProducts = await this.productsLoc;
-    this.productsLoc.fil;
-    const product = allProductNames.map((name) => {
-      allProductNames.filter((value) => {
-        if (value === productName) return;
-      });
-    });
-  }
-
   async searchProductAddToCart(productName) {
     await this.productsLoc
       .filter({ hasText: productName })
