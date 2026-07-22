@@ -4,7 +4,12 @@
 
 ## Core Difference
 
-The main difference lies in scope. UI testing checks if the visual elements look and work correctly. E2E (End-to-End) testing checks if the entire business flow works from start to finish.
+The main difference lies in scope.
+
+- UI testing checks if the visual elements look and work correctly.
+- E2E (End-to-End) testing checks if the entire business flow works from start to finish.
+- If server response in involved then make it as E2E tests.
+- Use the UI layer strictly for front-end behavior and layouts
 
 ## UI Testing
 

@@ -38,13 +38,14 @@ class LoginPage {
     return this.errorMessageLoc;
   }
 
+  // get error message returns locator
+  getErrorMessageCard() {
+    return this.errorMessageCard;
+  }
+
   // close error message dialog
   async closeErrorMessage() {
     await this.xCloseButton.click();
-  }
-
-  getErrorMessageCard() {
-    return this.errorMessageCard;
   }
 }
 

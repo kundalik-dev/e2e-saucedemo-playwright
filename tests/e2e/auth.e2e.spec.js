@@ -8,7 +8,7 @@ import InventoryPage from "../../pages/inventory.page";
 import { credentials, authData } from "../../test-data/auth-data";
 import inventoryData from "../../test-data/inventory-data.json";
 
-test.describe("Authentication Tests", () => {
+test.describe("Authentication E2E tests", () => {
   /** @type {LoginPage} */
   let loginPage;
   /** @type {InventoryPage} */
@@ -29,7 +29,7 @@ test.describe("Authentication Tests", () => {
     await loginPage.login(username, password);
 
     // Assert
-    await expect(inventoryPage.getPageHeading()).toBeVisible();
+    await expect(inventoryPage.pageHeadingLoc).toBeVisible();
     expect(await page.url()).toContain(inventoryData.pageUrl);
   });
 
@@ -72,4 +72,3 @@ test.describe("Authentication Tests", () => {
     await expect(loginPage.getErrorMessageCard()).not.toBeVisible();
   });
 });
-// should handle locked out user
