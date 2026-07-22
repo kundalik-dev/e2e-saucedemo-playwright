@@ -132,8 +132,9 @@ When you finish implementing something in this table, update its row instead of 
 
 - Snapshots live under the project-root `visual-baselines/` directory (`snapshotDir` in `playwright.config.js`), mirroring the spec path, e.g. `visual-baselines/ui/auth.ui.spec.js-snapshots/`.
 - Capture with `await expect(page).toHaveScreenshot("name.png")`; use `mask: [locator]` to hide dynamic content and `maxDiffPixelRatio`/`threshold` to tune sensitivity for flaky pixels.
-- After an intentional UI change, regenerate baselines with `pnpm exec playwright test --update-snapshots` and review the diff before committing the new PNGs.
-- See `docs/frameworks/06-visual-testing.md` for more detail.
+- **Snapshot filenames are platform-specific** (`*-chromium-win32.png` vs `*-chromium-linux.png`). A baseline captured on a developer's machine will never satisfy CI running on a different OS — do not try to generate the CI (Linux) baseline by running `--update-snapshots` locally on Windows/macOS. Use the `Update Visual Baselines` workflow instead (see below).
+- To (re)generate the Linux baseline CI checks against, manually trigger the **`Update Visual Baselines`** GitHub Actions workflow (`.github/workflows/update-visual-baselines.yml`, `workflow_dispatch` only — it never runs automatically) from the Actions tab. It runs `playwright test --update-snapshots` on the same `ubuntu-latest` runner CI uses and commits the resulting PNGs back to the branch. Baselines only change when this workflow is run on purpose — regular pushes/PRs never overwrite them.
+- See `docs/frameworks/06-visual-testing.md` for more detail, and `docs/frameworks/10-ci-fixes-node-runner-and-visual-baselines.md` for why this was needed.
 
 ### docs
 
@@ -216,6 +217,8 @@ should logout successfully
 - Use `toEqual` to assert arrays of static/pre-fetched data — it doesn't auto-wait, so only use it for values already resolved, not for locators/live DOM state that need Playwright's auto-retrying assertions.
 - When sorting an array that's reused elsewhere, prefer the non-mutating `toSorted()` over `sort()` — `sort()` mutates the original array in place, which can cause hard-to-trace bugs if the same array reference is asserted against later in the test.
 - `.vscode/playwright.code-snippets` provides prefix snippets (`pw-test`, `pw-gb-role`, `pw-gb-testid`, `pw-locator`, `pw-spec`, etc.) for scaffolding new specs/locators consistently — see `.vscode/playwright-snippets.md` for the full list.
+- **GitHub Actions major-version pins go stale**: `actions/checkout`/`actions/setup-node`/`actions/upload-artifact` at old majors (e.g. `@v4`) get forced onto whatever Node runtime GitHub currently supports, which throws a "Node.js X is deprecated" warning once GitHub drops that runtime. Fix by bumping to the action's current major tag (verify via `https://api.github.com/repos/<owner>/<repo>/releases/latest`, don't guess the number) — don't pin exact patch versions, floating majors (`@v7`) are the convention these actions use.
+- **Visual regression baselines are OS-specific**: `toHaveScreenshot()` filenames embed the platform (`-win32.png`, `-linux.png`, `-darwin.png`). A baseline generated on a dev machine will always be "missing" on a CI runner with a different OS — this isn't flakiness, it's a different filename. Generate/update baselines on the same OS the assertion will run on (for this repo: via the manually-triggered `Update Visual Baselines` GitHub Actions workflow, not locally on Windows).
 
 ## Keeping instruction files in sync
 

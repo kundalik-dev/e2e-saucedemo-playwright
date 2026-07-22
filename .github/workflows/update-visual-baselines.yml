@@ -1,0 +1,38 @@
+name: Update Visual Baselines
+
+# Manual-only: never runs on push/PR. Visual regression baselines under
+# visual-baselines/ only change when this workflow is run on purpose from
+# the Actions tab (or `gh workflow run`) — regular CI never overwrites them.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-snapshots:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+      - name: Install dependencies
+        run: npm install -g pnpm && pnpm install
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps
+      - name: Update snapshots
+        run: pnpm exec playwright test --update-snapshots
+
+      - name: Commit updated baselines
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add visual-baselines
+          if git diff --cached --quiet; then
+            echo "No baseline changes to commit."
+          else
+            git commit -m "chore: update visual regression baselines"
+            git push
+          fi
